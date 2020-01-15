@@ -17,7 +17,7 @@ nV = testUtility.numVic(player_names)
 nC = -10 + 10 * len(player_names)
 
 #define box
-box = testUtility.GetBoxes(nV)
+box = testUtility.getBoxes(nV)
 
 supply_order = {0:['Curse','Copper'],2:['Estate','Cellar','Chapel','Moat'],
                 3:['Silver','Chancellor','Village','Woodcutter','Workshop'],
@@ -26,16 +26,19 @@ supply_order = {0:['Curse','Copper'],2:['Estate','Cellar','Chapel','Moat'],
                 6:['Gold','Adventurer'],8:['Province']}
 
 #Pick 10 cards from box to be in the supply.
-supply = testUtility.getSupply(box)
+boxlist = [k for k in box]
+random.shuffle(boxlist)
+random10 = boxlist[:25]
+supply = defaultdict(list, [(k, box[k]) for k in random10])
 
 #The supply always has these cards
-testUtility.setSupply(player_names, nV, nC)
+testUtility.setSupply(supply, player_names, nV, nC)
 
 #initialize the trash
 trash = []
 
 #Costruct the Player objects
-players = testUtility.getPlayers()
+players = testUtility.getPlayers(player_names)
 
 #Play the game
 testUtility.playGame(supply, supply_order, players, trash)
